@@ -85,7 +85,7 @@ export function Hero({ lang, dict }: HeroProps) {
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-2xl bg-[#142c35]/80 p-2 group">
               <img
-                src="/images/makkah-madinah-map.jpg"
+                src="/images/icon-tower-makkah.jpg"
                 alt="Icon Tower Makkah"
                 className="w-full h-80 lg:h-96 object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
               />

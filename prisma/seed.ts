@@ -212,8 +212,8 @@ async function main() {
         create: [
           {
             type: 'IMAGE',
-            url: '/images/makkah-madinah-map.jpg',
-            thumbnailUrl: '/images/makkah-madinah-map.jpg',
+            url: '/images/icon-tower-makkah.jpg',
+            thumbnailUrl: '/images/icon-tower-makkah.jpg',
             title: 'Haram Proximity Landmark & Masterplan',
             sortOrder: 1,
           },
