@@ -36,41 +36,31 @@ export default async function ChairmanPage({ params }: { params: Promise<{ lang:
           </div>
         </div>
 
-        {/* Chairman Photo & Meeting Form Section */}
+        {/* Office Interior Showcase & Meeting Form Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-[#142c35] border border-amber-500/20 p-8 rounded-2xl space-y-6 shadow-xl">
-              <div className="relative rounded-xl overflow-hidden border border-amber-500/30">
+              
+              {/* Executive Office Interior Photo */}
+              <div className="relative rounded-xl overflow-hidden border border-amber-500/30 group">
                 <img
-                  src="/images/chairman.jpg"
-                  alt="Chairman Portrait"
-                  className="w-full h-80 object-cover object-top"
+                  src="/images/chairman-office.jpg"
+                  alt="Chairman Executive Office Interior"
+                  className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#142c35] via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-3 start-3 text-white">
                   <span className="text-[#f6d860] font-bold text-xs uppercase block">
-                    Executive Chairman
+                    Office of the Chairman
                   </span>
-                  <span className="text-[11px] text-slate-300">Icon International</span>
-                </div>
-              </div>
-
-              {/* Office Interior Photo Showcase */}
-              <div className="relative rounded-xl overflow-hidden border border-amber-500/20">
-                <img
-                  src="/images/chairman-office.jpg"
-                  alt="Chairman Executive Office Interior"
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute bottom-2 start-2 text-[10px] bg-[#0d2027]/90 text-amber-200 px-2 py-0.5 rounded border border-amber-500/30">
-                  Chairman Corporate Suite
+                  <span className="text-[11px] text-slate-300">Icon International Headquarters</span>
                 </div>
               </div>
 
               <div className="space-y-2 text-xs text-slate-300">
-                <h3 className="text-sm font-bold text-white">Direct Executive Consultation</h3>
+                <h3 className="text-sm font-bold text-white">Executive Suite & Appointments</h3>
                 <p className="font-light leading-relaxed">
-                  High-net-worth investors and commercial agency founders may request a direct meeting with the Chairman's office in Muscat, Salalah, Makkah, or Dhaka.
+                  High-net-worth investors and commercial agency partners may schedule a direct meeting with the Chairman's Office in Muscat, Salalah, Makkah, or Dhaka.
                 </p>
               </div>
             </div>
