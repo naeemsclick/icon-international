@@ -32,7 +32,7 @@ export default async function AdminLayout({
       'CONTENT_MANAGER',
     ]);
   } catch (error) {
-    redirect(`/${lang}/investor/login?callbackUrl=/${lang}/admin/dashboard`);
+    redirect(`/${lang}/admin/login?callbackUrl=/${lang}/admin/dashboard`);
   }
 
   const userRole = (session.user as any)?.role || 'STAFF';
