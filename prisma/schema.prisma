@@ -1,0 +1,367 @@
+// Prisma Schema for Icon International Production Application
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  userCode     String   @unique // e.g., ICON-INV-1001 or ICON-ADM-001
+  email        String   @unique
+  name         String
+  phone        String?
+  passwordHash String
+  role         String   @default("INVESTOR") // SUPER_ADMIN, INVESTMENT_MANAGER, CRM_MANAGER, UMRAH_MANAGER, CONTENT_MANAGER, INVESTOR
+  status       String   @default("ACTIVE")   // ACTIVE, SUSPENDED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  investorProfile InvestorProfile?
+  auditLogs       AuditLog[]
+  assignedLeads   Lead[]           @relation("AssignedStaff")
+  blogPosts       BlogPost[]
+  notifications   Notification[]
+}
+
+model InvestorProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  investorCode   String   @unique
+  passportNumber String?
+  nationalId     String?
+  address        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  nominees    Nominee[]
+  investments Investment[]
+}
+
+model Nominee {
+  id                 String          @id @default(uuid())
+  investorProfileId  String
+  investorProfile    InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+  fullName           String
+  relation           String
+  phone              String?
+  email              String?
+  nationalIdPassport String?
+  createdAt          DateTime        @default(now())
+}
+
+model Project {
+  id                   String   @id @default(uuid())
+  slug                 String   @unique
+  status               String   @default("UNDER_CONSTRUCTION") // UPCOMING, UNDER_CONSTRUCTION, READY, COMPLETED, SOLD_OUT
+  country              String
+  city                 String
+  location             String
+  latitude             Float?
+  longitude            Float?
+  propertyType         String   @default("FLAT") // LAND, FLAT, HOTEL, BUILDING, COMMERCIAL, OTHER
+  investmentType       String   @default("INVESTMENT") // OWNERSHIP, INVESTMENT, SHARE, UNIT
+  startingPrice        Float
+  currency             String   @default("SAR") // SAR, OMR, BDT, USD
+  cashAvailable        Boolean  @default(true)
+  installmentAvailable Boolean  @default(true)
+  featured             Boolean  @default(false)
+  isPublic             Boolean  @default(true)
+  expectedCompletion   String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  translations        ProjectTranslation[]
+  media               ProjectMedia[]
+  units               ProjectUnit[]
+  installmentPlans    InstallmentPlan[]
+  facilities          Facility[]
+  documents           ProjectDocument[]
+  constructionUpdates ConstructionUpdate[]
+  investments         Investment[]
+  leads               Lead[]
+  notices             InvestorNotice[]
+}
+
+model ProjectTranslation {
+  id               String  @id @default(uuid())
+  projectId        String
+  project          Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  language         String  // "en", "bn", "ar"
+  name             String
+  shortDescription String
+  description      String
+  ownershipInfo    String?
+  facilitiesText   String?
+
+  @@unique([projectId, language])
+}
+
+model ProjectMedia {
+  id           String  @id @default(uuid())
+  projectId    String
+  project      Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type         String  @default("IMAGE") // IMAGE, VIDEO
+  url          String
+  thumbnailUrl String?
+  title        String?
+  sortOrder    Int     @default(0)
+}
+
+model ProjectUnit {
+  id             String  @id @default(uuid())
+  projectId      String
+  project        Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  unitIdentifier String  // e.g., "Block A - Unit 302"
+  type           String
+  size           String
+  price          Float
+  currency       String  @default("SAR")
+  status         String  @default("AVAILABLE") // AVAILABLE, RESERVED, SOLD
+
+  investments Investment[]
+}
+
+model InstallmentPlan {
+  id                String  @id @default(uuid())
+  projectId         String
+  project           Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name              String
+  description       String?
+  downPaymentAmount Float
+  monthlyAmount     Float
+  durationMonths    Int
+  order             Int     @default(0)
+}
+
+model Facility {
+  id              String  @id @default(uuid())
+  projectId       String
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name            String
+  icon            String  @default("Building")
+  translationData String? // JSON string for multilingual
+}
+
+model ProjectDocument {
+  id         String   @id @default(uuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title      String
+  type       String   @default("Brochure") // Brochure, FloorPlan, Legal, Agreement
+  fileUrl    String
+  visibility String   @default("PUBLIC") // PUBLIC, INVESTOR_ONLY, PRIVATE
+  createdAt  DateTime @default(now())
+}
+
+model ConstructionUpdate {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  images      String   // JSON string array of URLs
+  updateDate  DateTime @default(now())
+}
+
+model Investment {
+  id                String          @id @default(uuid())
+  investorProfileId String
+  investorProfile   InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+  projectId         String
+  project           Project         @relation(fields: [projectId], references: [id])
+  projectUnitId     String?
+  projectUnit       ProjectUnit?    @relation(fields: [projectUnitId], references: [id])
+  investmentAmount  Float
+  currency          String          @default("SAR")
+  paymentPreference String          @default("INSTALLMENT") // CASH, INSTALLMENT
+  status            String          @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+  investedAt        DateTime        @default(now())
+
+  payments Payment[]
+}
+
+model Payment {
+  id            String     @id @default(uuid())
+  investmentId  String
+  investment    Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  amount        Float
+  currency      String     @default("SAR")
+  dueDate       DateTime
+  paidDate      DateTime?
+  status        String     @default("PENDING") // PENDING, PAID, OVERDUE
+  receiptUrl    String?
+  paymentMethod String?
+  notes         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model InvestorNotice {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id])
+  publishedAt DateTime @default(now())
+}
+
+model Lead {
+  id                   String   @id @default(uuid())
+  source               String   @default("PROJECT_APPLY") // PROJECT_APPLY, CONTACT_FORM, CHAIRMAN_MEETING, B2B_UMRAH, WHATSAPP
+  leadType             String   @default("INVESTMENT")    // INVESTMENT, GENERAL, CHAIRMAN_MEETING, B2B
+  name                 String
+  country              String
+  phone                String
+  whatsapp             String?
+  email                String
+  interestedProjectId  String?
+  interestedProject    Project? @relation(fields: [interestedProjectId], references: [id])
+  proposedAmount       Float?
+  currency             String?  @default("SAR")
+  paymentPreference    String?  // CASH, INSTALLMENT
+  preferredMeetingTime String?
+  message              String?
+  status               String   @default("NEW") // NEW, CONTACTED, QUALIFIED, MEETING_SCHEDULED, DOCUMENTATION, CONVERTED, CLOSED, LOST
+  assignedStaffId      String?
+  assignedStaff        User?    @relation("AssignedStaff", fields: [assignedStaffId], references: [id])
+  notes                String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model B2BAgencyApplication {
+  id              String   @id @default(uuid())
+  agencyName      String
+  country         String
+  licenseNumber   String
+  contactPerson   String
+  phone           String
+  whatsapp        String?
+  email           String
+  passengerVolume Int
+  requiredVisaQty Int
+  ticketingReq    Boolean  @default(false)
+  hotelReq        Boolean  @default(false)
+  transportReq    Boolean  @default(false)
+  documentUrls    String?  // JSON array string of uploaded document URLs
+  message         String?
+  status          String   @default("NEW") // NEW, UNDER_REVIEW, VERIFIED, DOCUMENTS_REQUIRED, APPROVED, TRANSFERRED_TO_UMRAH, CLOSED
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model MeetingRequest {
+  id            String   @id @default(uuid())
+  fullName      String
+  country       String
+  company       String?
+  phone         String
+  whatsapp      String?
+  email         String
+  purpose       String
+  preferredDate String
+  preferredTime String
+  message       String?
+  status        String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  createdAt     DateTime @default(now())
+}
+
+model BlogPost {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id])
+  featuredImage   String
+  category        String
+  tags            String?  // Comma-separated
+  status          String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+  publishedAt     DateTime @default(now())
+  seoTitle        String?
+  metaDescription String?
+  ogImage         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  translations BlogPostTranslation[]
+}
+
+model BlogPostTranslation {
+  id         String   @id @default(uuid())
+  blogPostId String
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  language   String   // "en", "bn", "ar"
+  title      String
+  excerpt    String
+  content    String
+
+  @@unique([blogPostId, language])
+}
+
+model Office {
+  id           String   @id @default(uuid())
+  name         String
+  country      String
+  address      String
+  phone        String
+  whatsapp     String?
+  email        String
+  latitude     Float?
+  longitude    Float?
+  imageUrl     String?
+  workingHours String?
+  isActive     Boolean  @default(true)
+  isMain       Boolean  @default(false)
+  sortOrder    Int      @default(0)
+}
+
+model CMSPage {
+  id        String   @id @default(uuid())
+  slug      String   @unique // e.g. "privacy-policy", "terms-and-conditions", "investment-disclaimer"
+  updatedAt DateTime @updatedAt
+
+  translations CMSPageTranslation[]
+}
+
+model CMSPageTranslation {
+  id        String  @id @default(uuid())
+  cmsPageId String
+  cmsPage   CMSPage @relation(fields: [cmsPageId], references: [id], onDelete: Cascade)
+  language  String  // "en", "bn", "ar"
+  title     String
+  content   String
+
+  @@unique([cmsPageId, language])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // e.g. "PRICE_CHANGE", "INVESTOR_CREATED", "PAYMENT_RECORDED"
+  entity    String   // e.g. "Project", "Payment", "User"
+  entityId  String
+  oldValue  String?  // JSON string
+  newValue  String?  // JSON string
+  ipAddress String?
+  userAgent String?
+  timestamp DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String?  // Null means system-wide/admin notification
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // INQUIRY, PAYMENT, NOTICE, UPDATE
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,73 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "realEstate": "Real Estate",
+    "investorVisa": "Investor Visa",
+    "umrahTicketing": "Umrah & Ticketing",
+    "othersProjects": "Others Projects",
+    "blog": "Blog & News",
+    "contact": "Contact Us",
+    "investorLogin": "Investor Login",
+    "dashboard": "Investor Dashboard",
+    "admin": "Admin Panel",
+    "whatsappUs": "WhatsApp Us"
+  },
+  "hero": {
+    "badge": "Global Real Estate & Investment Solutions",
+    "title": "Empowering Global Investments Across Borders",
+    "subtitle": "Premier real estate development, investor visa processing, and corporate services bridging Saudi Arabia, Oman, and Bangladesh.",
+    "exploreProjects": "Explore Projects",
+    "investWithUs": "Invest With Us",
+    "contactUs": "Contact Us"
+  },
+  "featuredProjects": {
+    "title": "Featured Real Estate Developments",
+    "subtitle": "Discover luxury residential, commercial, and hospitality opportunities in prime Middle East & South Asia locations.",
+    "viewAll": "View All Projects",
+    "startingFrom": "Starting from",
+    "cash": "Cash Option",
+    "installment": "Installment Available",
+    "details": "View Details",
+    "apply": "Apply to Invest"
+  },
+  "services": {
+    "title": "Our Core Services",
+    "subtitle": "Delivering excellence across real estate development, visa processing, and corporate travel.",
+    "realEstateTitle": "Real Estate Development",
+    "realEstateDesc": "Premium residential, hotel, and commercial projects in Makkah, Madinah, Salalah, and Dhaka.",
+    "visaTitle": "Investor Visa Processing",
+    "visaDesc": "End-to-end guidance and hassle-free processing for corporate & investor visa applications.",
+    "umrahTitle": "Umrah & B2B Travel Services",
+    "umrahDesc": "Tailored packages, visa assistance, hotel booking, and air ticketing for agency partners."
+  },
+  "offices": {
+    "title": "Global Corporate Offices",
+    "subtitle": "Visit our headquarters and regional representative offices.",
+    "oman": "Oman Office",
+    "bangladesh": "Bangladesh Office",
+    "makkah": "Makkah Corporate Office",
+    "uk": "UK Representation",
+    "usa": "USA Representation"
+  },
+  "investorPortal": {
+    "title": "Investor Access Portal",
+    "loginSubtitle": "Access your private portfolio, payment schedules, receipts, and project updates securely.",
+    "investorCodeLabel": "Investor Code / User ID",
+    "passwordLabel": "Password",
+    "loginBtn": "Sign In to Portal",
+    "totalInvestment": "Total Investment",
+    "paidAmount": "Paid Amount",
+    "dueAmount": "Due Amount",
+    "nextInstallment": "Next Installment Date",
+    "agreements": "Legal Agreements",
+    "receipts": "Payment Receipts",
+    "nominee": "Nominee Information"
+  },
+  "footer": {
+    "aboutText": "Icon International is a trusted global corporate entity specializing in real estate investment, visa processing, and B2B corporate services across Oman, Saudi Arabia, and Bangladesh.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Information",
+    "copyright": "All rights reserved. Icon International."
+  }
+}
