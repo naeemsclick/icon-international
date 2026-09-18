@@ -212,17 +212,24 @@ async function main() {
         create: [
           {
             type: 'IMAGE',
+            url: '/images/makkah-madinah-map.jpg',
+            thumbnailUrl: '/images/makkah-madinah-map.jpg',
+            title: 'Haram Proximity Landmark & Masterplan',
+            sortOrder: 1,
+          },
+          {
+            type: 'IMAGE',
             url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
             thumbnailUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80',
-            title: 'Exterior Architecture View',
-            sortOrder: 1,
+            title: 'Exterior 5-Star Hotel Architecture',
+            sortOrder: 2,
           },
           {
             type: 'IMAGE',
             url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
             thumbnailUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80',
             title: 'Executive Suite Interior',
-            sortOrder: 2,
+            sortOrder: 3,
           },
         ],
       },

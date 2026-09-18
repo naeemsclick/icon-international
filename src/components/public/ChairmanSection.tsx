@@ -28,7 +28,7 @@ export function ChairmanSection({ lang, dict }: ChairmanSectionProps) {
                 <span className="bg-[#f6d860] text-[#0d2027] font-extrabold text-[10px] px-2.5 py-1 rounded uppercase tracking-widest inline-block shadow">
                   Executive Leadership
                 </span>
-                <h3 className="text-xl font-bold">Office of the Chairman</h3>
+                <h3 className="text-xl font-bold">Chairman's Vision & Leadership</h3>
                 <p className="text-xs text-slate-300">Strategic Vision & Global Real Estate Alliances</p>
               </div>
             </div>
