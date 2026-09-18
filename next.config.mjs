@@ -9,6 +9,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.optimization.splitChunks = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
