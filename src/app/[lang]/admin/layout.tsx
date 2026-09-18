@@ -10,6 +10,8 @@ import {
   ClipboardList,
 } from 'lucide-react';
 
+import { redirect } from 'next/navigation';
+
 export default async function AdminLayout({
   children,
   params,
@@ -20,13 +22,18 @@ export default async function AdminLayout({
   const resolvedParams = await params;
   const lang = resolvedParams.lang as Locale;
 
-  const session = await requireRole([
-    'SUPER_ADMIN',
-    'INVESTMENT_MANAGER',
-    'CRM_MANAGER',
-    'UMRAH_MANAGER',
-    'CONTENT_MANAGER',
-  ]);
+  let session;
+  try {
+    session = await requireRole([
+      'SUPER_ADMIN',
+      'INVESTMENT_MANAGER',
+      'CRM_MANAGER',
+      'UMRAH_MANAGER',
+      'CONTENT_MANAGER',
+    ]);
+  } catch (error) {
+    redirect(`/${lang}/investor/login?callbackUrl=/${lang}/admin/dashboard`);
+  }
 
   const userRole = (session.user as any)?.role || 'STAFF';
   const userName = session.user?.name || 'Staff User';

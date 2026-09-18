@@ -15,6 +15,7 @@ import {
   Bell,
   LogOut,
 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 
 export default async function InvestorDashboardPage({ params }: { params: Promise<{ lang: Locale }> }) {
@@ -22,7 +23,12 @@ export default async function InvestorDashboardPage({ params }: { params: Promis
   const dict = await getDictionary(lang);
 
   // Derive investor identity STRICTLY from authenticated session
-  const investor = await getStrictAuthenticatedInvestor();
+  let investor;
+  try {
+    investor = await getStrictAuthenticatedInvestor();
+  } catch (error) {
+    redirect(`/${lang}/investor/login?callbackUrl=/${lang}/investor/dashboard`);
+  }
 
   // Calculate portfolio financial summary
   let totalInvestmentAmount = 0;
