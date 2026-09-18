@@ -3,6 +3,19 @@ import { getDictionary, Locale } from '@/lib/i18n/dictionaries';
 import { notFound } from 'next/navigation';
 import { ShieldCheck, FileText } from 'lucide-react';
 
+export async function generateStaticParams() {
+  const pages = await db.cMSPage.findMany({ select: { slug: true } });
+  const langs = ['en', 'bn', 'ar'];
+  const params: { lang: string; slug: string }[] = [];
+  
+  for (const lang of langs) {
+    for (const page of pages) {
+      params.push({ lang, slug: page.slug });
+    }
+  }
+  return params;
+}
+
 export default async function LegalCMSPage({
   params,
 }: {

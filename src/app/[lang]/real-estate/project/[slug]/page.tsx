@@ -5,6 +5,19 @@ import Link from 'next/link';
 import { MapPin, Download, MessageSquare, ShieldCheck } from 'lucide-react';
 import { ProjectInquiryForm } from '@/components/public/ProjectInquiryForm';
 
+export async function generateStaticParams() {
+  const projects = await db.project.findMany({ select: { slug: true } });
+  const langs = ['en', 'bn', 'ar'];
+  const params: { lang: string; slug: string }[] = [];
+  
+  for (const lang of langs) {
+    for (const project of projects) {
+      params.push({ lang, slug: project.slug });
+    }
+  }
+  return params;
+}
+
 export default async function ProjectDetailPage({
   params,
 }: {

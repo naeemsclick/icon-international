@@ -4,6 +4,19 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Calendar, User, ArrowLeft, Share2 } from 'lucide-react';
 
+export async function generateStaticParams() {
+  const posts = await db.blogPost.findMany({ select: { slug: true } });
+  const langs = ['en', 'bn', 'ar'];
+  const params: { lang: string; slug: string }[] = [];
+  
+  for (const lang of langs) {
+    for (const post of posts) {
+      params.push({ lang, slug: post.slug });
+    }
+  }
+  return params;
+}
+
 export default async function BlogDetailPage({
   params,
 }: {
